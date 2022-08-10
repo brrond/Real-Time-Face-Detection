@@ -161,6 +161,7 @@
     <Xml Include="haarcascade_frontalface_default.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RTFD.h" />
     <ClInclude Include="RTFDApplication.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
