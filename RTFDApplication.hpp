@@ -13,6 +13,11 @@ private:
     const cv::String getKeys() { return "{help h usage ? | | Print this help message. After application start you can use several keys to manipulate the program:\n\t\t'G' - go to grayscale mode\n\t\t\t'T' - go to threshold mode\n\t\t\t\t'+'/'-' - increase/decrease threshold value}"; }
     int mainloop();
 
+    void print_help_before_loop();
+
+    void perform_additional_operations(cv::Mat& frame);
+    void handle_input(int key);
+
 private:
     const int argc;
     const char** argv;
@@ -32,6 +37,11 @@ int RTFDApplication::run() {
     return mainloop();
 }
 
+void RTFDApplication::print_help_before_loop() {
+    std::cout << "Start real-time face detection" << std::endl
+        << "Press 'Q' to exit" << std::endl;
+}
+
 int RTFDApplication::mainloop() {
     cv::Mat frame; // init frame
     cv::VideoCapture camera(1); // capture camera
@@ -45,8 +55,7 @@ int RTFDApplication::mainloop() {
         return -1;
     }
 
-    std::cout << "Start real-time face detection" << std::endl
-        << "Press 'Q' to exit" << std::endl;
+    print_help_before_loop();
 
     // first time point
     auto f = std::chrono::high_resolution_clock::now();
@@ -86,13 +95,19 @@ int RTFDApplication::mainloop() {
         cv::putText(frame, "TPF : " + std::to_string(time_per_frame) + "ms. FPS : " + std::to_string((int)fps), cv::Point(10, 30), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(255, 0, 0));
         imshow("output", frame); // show frame
 
-        int ch = cv::waitKey(5);
-        if (ch == 'q') {
-            std::cout << "Exiting..." << std::endl;
-            break;
-        }
-            
+        handle_input(cv::waitKey(5));
     } while (true);
 
     return 0;
+}
+
+void RTFDApplication::perform_additional_operations(cv::Mat& frame) {
+
+}
+
+void RTFDApplication::handle_input(int key) {
+    if (key == 'q') {
+        std::cout << "Exiting..." << std::endl;
+        exit(0);
+    }
 }
