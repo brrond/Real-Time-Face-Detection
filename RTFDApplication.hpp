@@ -50,12 +50,18 @@ int RTFDApplication::mainloop() {
     cv::VideoCapture camera; // capture camera
     cv::CascadeClassifier face_cascade("haarcascade_frontalface_default.xml"); // load face cascade
 
-    camera.open(1, cv::CAP_ANY); // open camera
+    for (int i = 0; i < CAMERA_INDICES_TO_TRY; i++) {
+        camera.open(i, cv::CAP_ANY); // try to open camera
 
-    // if problem with camera
-    if (!camera.isOpened()) {
-        std::cerr << "Error: unable to open camera\n";
-        return -1;
+        // if problem with camera
+        if (!camera.isOpened()) {
+            std::cerr << "Error: unable to open camera #" << i << std::endl;
+            if (i == CAMERA_INDICES_TO_TRY - 1) {
+                std::cout << "Exiting..." << std::endl;
+                exit(-1);
+            }
+        }
+        else break;
     }
 
     print_help_before_loop();
