@@ -21,6 +21,8 @@ private:
 private:
     const int argc;
     const char** argv;
+
+    bool grayscale = false;
 };
 
 int RTFDApplication::run() {
@@ -39,12 +41,13 @@ int RTFDApplication::run() {
 
 void RTFDApplication::print_help_before_loop() {
     std::cout << "Start real-time face detection" << std::endl
-        << "Press 'Q' to exit" << std::endl;
+        << "Press 'Q' to exit" << std::endl
+        << "Press 'G' to enable/disable grayscale mode" << std::endl;
 }
 
 int RTFDApplication::mainloop() {
     cv::Mat frame; // init frame
-    cv::VideoCapture camera(1); // capture camera
+    cv::VideoCapture camera; // capture camera
     cv::CascadeClassifier face_cascade("haarcascade_frontalface_default.xml"); // load face cascade
 
     camera.open(1, cv::CAP_ANY); // open camera
@@ -67,6 +70,8 @@ int RTFDApplication::mainloop() {
             std::cerr << "Error: blank frame grabbed\n";
             break;
         }
+
+        perform_additional_operations(frame);
 
         std::vector<cv::Rect> faces; // array of faces
         try {
@@ -102,12 +107,17 @@ int RTFDApplication::mainloop() {
 }
 
 void RTFDApplication::perform_additional_operations(cv::Mat& frame) {
-
+    if (grayscale) { 
+        cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
+    }
 }
 
 void RTFDApplication::handle_input(int key) {
     if (key == 'q') {
         std::cout << "Exiting..." << std::endl;
         exit(0);
+    }
+    else if (key == 'g') {
+        grayscale = !grayscale;
     }
 }
