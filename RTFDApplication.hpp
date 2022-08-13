@@ -23,6 +23,8 @@ private:
     const char** argv;
 
     bool grayscale = false;
+    bool threshold = false;
+    int thresholdValue = 128;
 };
 
 int RTFDApplication::run() {
@@ -42,7 +44,9 @@ int RTFDApplication::run() {
 void RTFDApplication::print_help_before_loop() {
     std::cout << "Start real-time face detection" << std::endl
         << "Press 'Q' to exit" << std::endl
-        << "Press 'G' to enable/disable grayscale mode" << std::endl;
+        << "Press 'G' to enable/disable grayscale mode" << std::endl
+        << "\tPress 'T' to enable/disable threshold" << std::endl
+        << "\t\tPres '+'/'-' to increase/decrease threshold value" << std::endl;
 }
 
 int RTFDApplication::mainloop() {
@@ -115,6 +119,15 @@ int RTFDApplication::mainloop() {
 void RTFDApplication::perform_additional_operations(cv::Mat& frame) {
     if (grayscale) { 
         cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
+
+        if (threshold) {
+            for (int i = 0; i < frame.rows; i++) {
+                for (int j = 0; j < frame.cols; j++) {
+                    uint8_t val = frame.at<uint8_t>(i, j);
+                    frame.at<uint8_t>(i, j) = (val > thresholdValue) ? 255 : 0;
+                }
+            }
+        }
     }
 }
 
@@ -125,5 +138,16 @@ void RTFDApplication::handle_input(int key) {
     }
     else if (key == 'g') {
         grayscale = !grayscale;
+    }
+    else if (key == 't') {
+        threshold = !threshold;
+    }
+    else if (key == '+') {
+        thresholdValue += 5;
+        if (thresholdValue > 255) thresholdValue = 255;
+    }
+    else if (key == '-') {
+        thresholdValue -= 5;
+        if (thresholdValue < 0) thresholdValue = 0;
     }
 }
