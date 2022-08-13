@@ -1,3 +1,11 @@
+/*****************************************************************//**
+ * \file   RTFD.h
+ * \brief  Contains includes and global consts
+ * 
+ * \author greentech72
+ * \date   August 2022
+ *********************************************************************/
+
 #pragma once
 
 #define CAMERA_INDICES_TO_TRY 5

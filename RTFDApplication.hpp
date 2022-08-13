@@ -1,12 +1,24 @@
+/*****************************************************************//**
+ * \file   RTFDApplication.hpp
+ * \brief  Real-time face detection application
+ * 
+ * \author greentech72
+ * \date   August 2022
+ *********************************************************************/
+
 #pragma once
 
 #include "RTFD.h"
 
-// Class of Real-Time-Face-Detection application
 class RTFDApplication {
 public:
     RTFDApplication(int argc, const char** argv) : argc(argc), argv(argv) {}
 
+    /**
+     * Runs Real-time face detection application.
+     * 
+     * \return execution result code
+     */
     int run();
 
 private:
@@ -19,12 +31,16 @@ private:
     void handle_input(int key);
 
 private:
+
     const int argc;
     const char** argv;
 
-    bool grayscale = false;
-    bool threshold = false;
-    int thresholdValue = 128;
+    /**
+     * Flags for per-frame operations.
+     */
+    bool mGrayscale = false;
+    bool mThreshold = false;
+    int mThresholdValue = 128;
 };
 
 int RTFDApplication::run() {
@@ -117,14 +133,14 @@ int RTFDApplication::mainloop() {
 }
 
 void RTFDApplication::perform_additional_operations(cv::Mat& frame) {
-    if (grayscale) { 
+    if (mGrayscale) { 
         cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
 
-        if (threshold) {
+        if (mThreshold) {
             for (int i = 0; i < frame.rows; i++) {
                 for (int j = 0; j < frame.cols; j++) {
                     uint8_t val = frame.at<uint8_t>(i, j);
-                    frame.at<uint8_t>(i, j) = (val > thresholdValue) ? 255 : 0;
+                    frame.at<uint8_t>(i, j) = (val > mThresholdValue) ? 255 : 0;
                 }
             }
         }
@@ -137,17 +153,17 @@ void RTFDApplication::handle_input(int key) {
         exit(0);
     }
     else if (key == 'g') {
-        grayscale = !grayscale;
+        mGrayscale = !mGrayscale;
     }
     else if (key == 't') {
-        threshold = !threshold;
+        mThreshold = !mThreshold;
     }
     else if (key == '+') {
-        thresholdValue += 5;
-        if (thresholdValue > 255) thresholdValue = 255;
+        mThresholdValue += 5;
+        if (mThresholdValue > 255) mThresholdValue = 255;
     }
     else if (key == '-') {
-        thresholdValue -= 5;
-        if (thresholdValue < 0) thresholdValue = 0;
+        mThresholdValue -= 5;
+        if (mThresholdValue < 0) mThresholdValue = 0;
     }
 }
