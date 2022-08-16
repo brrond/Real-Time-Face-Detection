@@ -10,6 +10,36 @@ C++ is a general-purpose programming language created by Danish computer scienti
 
 I like this programming language very much as it's allows you deeply understand how computer memory and processor works. And, in my opinion, combination of two difficult tasks (programming in C++ and Computer Vision) is good experience for every developer.
 
+## Demonstration
+
+This application allows you to test Face Detection in different modes.
+
+### BGR (RGB) Face Detection
+
+It's standard application mode. You don't need to press any keys for this.
+
+<img src='doc/bgr-face-detection.png' alt='Image shows bgr face detection'>
+
+### Grayscale Face Detection
+
+To enable grayscale mode press 'G'. Face detection works better in this mode, because image has less noise.
+
+<img src='doc/grayscale-face-detection.png' alt='Image shows grayscale face detection'>
+
+### Threshold mode
+
+To enable threshold mode press 'T' when you in grayscale mode. To modify threshold value pres '+'/'-' on your keyboard. This modes is really bad for face detection.
+
+<img src='doc/threshold.gif' alt='Gif shows threshold mode'>
+
+### Motion mode
+
+You can't really detect face in this mode, it's possible but hard to catch frame. It's part of algorithms implementation for Computer Vision.
+
+To enable motion mode press 'M' when you in grayscale mode.
+
+<img src='doc/motion.gif' alt='Gif shows motion mode'>
+
 ## Build & run
 
 ### Install OpenCV
