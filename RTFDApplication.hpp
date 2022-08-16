@@ -22,7 +22,7 @@ public:
     int run();
 
 private:
-    const cv::String getKeys() { return "{help h usage ? | | Print this help message. After application start you can use several keys to manipulate the program:\n\t\t'G' - go to grayscale mode\n\t\t\t'T' - go to threshold mode\n\t\t\t\t'+'/'-' - increase/decrease threshold value}"; }
+    const cv::String getKeys() { return "{help h usage ? | | Print this help message. After application start you can use several keys to manipulate the program:\n\t\t'G' - go to grayscale mode\n\t\t\t'T' - go to threshold mode\n\t\t\t\t'+'/'-' - increase/decrease threshold value\n\t\t'M' - enable/disable motion filter}"; }
     int mainloop();
 
     void print_help_before_loop();
@@ -40,6 +40,8 @@ private:
      */
     bool mGrayscale = false;
     bool mThreshold = false;
+    bool mMotion = false;
+    cv::Mat* mPrevFrame = nullptr;
     int mThresholdValue = 128;
 };
 
@@ -62,7 +64,8 @@ void RTFDApplication::print_help_before_loop() {
         << "Press 'Q' to exit" << std::endl
         << "Press 'G' to enable/disable grayscale mode" << std::endl
         << "\tPress 'T' to enable/disable threshold" << std::endl
-        << "\t\tPres '+'/'-' to increase/decrease threshold value" << std::endl;
+        << "\t\tPres '+'/'-' to increase/decrease threshold value" << std::endl
+        << "Press 'M' to enable/disable motion" << std::endl;
 }
 
 int RTFDApplication::mainloop() {
@@ -144,6 +147,23 @@ void RTFDApplication::perform_additional_operations(cv::Mat& frame) {
                 }
             }
         }
+        else if (mMotion) {
+            cv::Mat* tmp = new cv::Mat(frame.clone());
+            if (mPrevFrame != nullptr) {
+                for (int i = 0; i < frame.rows; i++) {
+                    for (int j = 0; j < frame.cols; j++) {
+                        // current frame - prev frame
+                        frame.at<uint8_t>(i, j) = abs(frame.at<uint8_t>(i, j) - mPrevFrame->at<uint8_t>(i, j));
+                    }
+                }
+                delete mPrevFrame;
+            }
+            mPrevFrame = tmp;
+        }
+        else if (!mMotion) {
+            delete mPrevFrame;
+            mPrevFrame = nullptr;
+        }
     }
 }
 
@@ -154,16 +174,24 @@ void RTFDApplication::handle_input(int key) {
     }
     else if (key == 'g') {
         mGrayscale = !mGrayscale;
+        std::cout << "Grayscale mode is: " << (mGrayscale ? "enabled" : "disabled") << std::endl;
     }
-    else if (key == 't') {
+    else if (key == 't' && mGrayscale && !mMotion) {
         mThreshold = !mThreshold;
+        std::cout << "Threshold mode is: " << (mThreshold? "enabled" : "disabled") << std::endl;
+    }
+    else if (key == 'm' && mGrayscale && !mThreshold) {
+        mMotion = !mMotion;
+        std::cout << "Motion mode is: " << (mMotion ? "enabled" : "disabled") << std::endl;
     }
     else if (key == '+') {
         mThresholdValue += 5;
         if (mThresholdValue > 255) mThresholdValue = 255;
+        std::cout << "Threshold value is: " << mThresholdValue << std::endl;
     }
     else if (key == '-') {
         mThresholdValue -= 5;
         if (mThresholdValue < 0) mThresholdValue = 0;
+        std::cout << "Threshold value is: " << mThresholdValue << std::endl;
     }
 }
