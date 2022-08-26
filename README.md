@@ -5,6 +5,10 @@ Current implementation of real-time face detection systems uses <a href='https:/
 Problem of face detection is currently very important as those systems can be used for different embedded systems.
 The idea of the project is to create such system using C++ and OpenCV.
 
+## Contributing
+
+If you want to contribute to this project read <a href='CONTRIBUTING.md'>CONTRIBUTING.md</a>.
+
 ## C++
 C++ is a general-purpose programming language created by Danish computer scientist Bjarne Stroustrup as an extension of the C programming language, or "C with Classes". The language has expanded significantly over time, and modern C++ now has object-oriented, generic, and functional features in addition to facilities for low-level memory manipulation. It is almost always implemented as a compiled language, and many vendors provide C++ compilers, including the Free Software Foundation, LLVM, Microsoft, Intel, Oracle, and IBM, so it is available on many platforms (<a href='https://en.wikipedia.org/wiki/C%2B%2B'>continue</a>).
 
