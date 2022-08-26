@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "RTFD.h"
+#include "../include/RTFD.h"
 
 class RTFDApplication {
 public:
@@ -71,7 +71,7 @@ void RTFDApplication::print_help_before_loop() {
 int RTFDApplication::mainloop() {
     cv::Mat frame; // init frame
     cv::VideoCapture camera; // capture camera
-    cv::CascadeClassifier face_cascade("haarcascade_frontalface_default.xml"); // load face cascade
+    cv::CascadeClassifier face_cascade("resources/haarcascade_frontalface_default.xml"); // load face cascade
 
     for (int i = 0; i < CAMERA_INDICES_TO_TRY; i++) {
         camera.open(i, cv::CAP_ANY); // try to open camera
