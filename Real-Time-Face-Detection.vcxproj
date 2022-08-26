@@ -155,14 +155,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="include\RTFD.h" />
+    <ClInclude Include="src\RTFDApplication.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="haarcascade_frontalface_default.xml" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RTFD.h" />
-    <ClInclude Include="RTFDApplication.hpp" />
+    <Xml Include="resources\haarcascade_frontalface_default.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
